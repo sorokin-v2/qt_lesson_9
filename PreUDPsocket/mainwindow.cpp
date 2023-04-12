@@ -70,12 +70,7 @@ void MainWindow::on_pb_stop_clicked()
 
 void MainWindow::on_pb_send_clicked()
 {
-
-    QByteArray dataToSend;
-    QDataStream outStr(&dataToSend, QIODevice::WriteOnly);
-
-    outStr << ui->te_scr->toPlainText();
-
+    QByteArray dataToSend = ui->te_scr->toPlainText().toUtf8();
     udpWorker->SendMSGDatagram(dataToSend);
 }
 

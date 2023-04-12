@@ -27,7 +27,9 @@ void UDPworker::InitSocket()
 
     messageUDPSocket->bind(QHostAddress::LocalHost, MSG_BIND_PORT);
 
-    connect(messageUDPSocket, &QUdpSocket::readyRead, this, &UDPworker::readMSGPendingDatagrams);
+    //connect(messageUDPSocket, &QUdpSocket::readyRead, this, &UDPworker::readMSGPendingDatagrams);
+
+    connect(messageUDPSocket, &QUdpSocket::readyRead, this, &UDPworker::readPendingDatagrams);
 
 }
 
@@ -39,7 +41,6 @@ void UDPworker::ReadDatagram(QNetworkDatagram datagram)
 
     QByteArray data;
     data = datagram.data();
-
 
     QDataStream inStr(&data, QIODevice::ReadOnly);
     QDateTime dateTime;
@@ -79,15 +80,20 @@ void UDPworker::readPendingDatagrams( void )
             QNetworkDatagram datagram = serviceUdpSocket->receiveDatagram();
             ReadDatagram(datagram);
     }
-}
-
-void UDPworker::readMSGPendingDatagrams( void )
-{
-    /*
-     *  Производим чтение принятых датаграмм
-     */
     while(messageUDPSocket->hasPendingDatagrams()){
             QNetworkDatagram datagram = messageUDPSocket->receiveDatagram();
             emit sig_sendMSGToGUI(datagram.senderAddress(), datagram.data().size());
     }
 }
+
+/*
+void UDPworker::readMSGPendingDatagrams( void )
+{
+    //  Производим чтение принятых датаграмм
+
+    while(messageUDPSocket->hasPendingDatagrams()){
+            QNetworkDatagram datagram = messageUDPSocket->receiveDatagram();
+            emit sig_sendMSGToGUI(datagram.senderAddress(), datagram.data().size());
+    }
+}
+*/

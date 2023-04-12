@@ -24,8 +24,8 @@ public:
 private slots:
     void readPendingDatagrams(void);
 
-public slots:
-    void readMSGPendingDatagrams (void);
+//public slots:
+//    void readMSGPendingDatagrams (void);
 
 private:
     QUdpSocket* serviceUdpSocket;
